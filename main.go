@@ -7,7 +7,7 @@ import (
 )
 
 const cols int = 10
-const rows int = 10
+const rows int = 11
 const frames int = 2
 
 func main() {
@@ -20,8 +20,8 @@ func main() {
 		grid = calculateNextState(grid)
 	}
 
-	for i := 0; i < grid.Cols(); i++ {
-		for j := 0; j < grid.Rows(); j++ {
+	for i := 0; i < grid.Rows(); i++ {
+		for j := 0; j < grid.Cols(); j++ {
 			fmt.Print(grid.Value(i, j))
 		}
 		fmt.Print("\n")

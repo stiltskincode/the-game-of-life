@@ -27,8 +27,8 @@ func (b *Grid) Value(x, y int) int {
 	return b.data[x][y]
 }
 
-func (b *Grid) SetValue(col, row, v int) {
-	b.data[col][row] = v
+func (b *Grid) SetValue(row, col, v int) {
+	b.data[row][col] = v
 }
 
 func makeGrid(rows, cols int) (*Grid, error) {
@@ -36,9 +36,9 @@ func makeGrid(rows, cols int) (*Grid, error) {
 		return nil, errors.New("Cannot initialize negative size of grid.")
 	}
 
-	data := make([][]int, cols)
-	for col := 0; col < cols; col++ {
-		data[col] = make([]int, rows)
+	data := make([][]int, rows)
+	for row := 0; row < rows; row++ {
+		data[row] = make([]int, cols)
 	}
 
 	g := &Grid{
