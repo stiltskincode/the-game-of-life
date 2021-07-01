@@ -12,10 +12,10 @@ func TestRandomMatrix(t *testing.T) {
 	rows := 10
 
 	firstMatrix, _ := makeGrid(rows, cols)
-	randomMatrix(firstMatrix)
+	setRandomValues(firstMatrix)
 
 	secondMatrix, _ := makeGrid(rows, cols)
-	randomMatrix(secondMatrix)
+	setRandomValues(secondMatrix)
 
 	diff := false
 
@@ -38,7 +38,7 @@ var nextNeighboursTests = []struct {
 }{
 	{[][]int{{1, 1, 1}}, []int{0, 1, 2}},
 	{[][]int{{1, 1, 1}}, []int{0, 1, 2}},
-	{[][]int{{1, 1, 1}}, []int{0, 0, 1}},
+	{[][]int{{1, 1, 1}}, []int{0, 0, 2}},
 	{[][]int{{1}, {1}, {1}}, []int{1, 0, 2}},
 }
 
@@ -57,7 +57,7 @@ func TestGetNumberOfNeighbours(t *testing.T) {
 
 			total := getNumberOfNeighbours(tt.out[0], tt.out[1], matrix)
 			if total != tt.out[2] {
-				t.Fatalf("Number of number of neighbours is wrong %v", total)
+				t.Fatalf("Number of neighbours is wrong %v, should be %v", total, tt.out[2])
 			}
 		})
 	}

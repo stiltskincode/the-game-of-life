@@ -1,8 +1,10 @@
 package main
 
-import "math/rand"
+import (
+	"math/rand"
+)
 
-func randomMatrix(m Matrix) {
+func setRandomValues(m Matrix) {
 	for row := 0; row < m.Rows(); row++ {
 		for col := 0; col < m.Cols(); col++ {
 			m.SetValue(row, col, rand.Intn(2))
@@ -10,41 +12,61 @@ func randomMatrix(m Matrix) {
 	}
 }
 
+func setGlider(m Matrix) {
+	centerY := m.Rows() / 2
+	centerX := m.Cols() / 2
+
+	if centerY-1 >= 0 {
+		m.SetValue(centerY-1, centerX, 1)
+	}
+
+	if centerX+1 < m.Cols() {
+		m.SetValue(centerY, centerX+1, 1)
+	}
+
+	if centerY+1 < m.Rows() {
+		m.SetValue(centerY+1, centerX, 1)
+	}
+
+	if centerY+1 < m.Rows() {
+		m.SetValue(centerY+1, centerX, 1)
+	}
+
+	if centerY+1 < m.Rows() && centerX-1 >= 0 {
+		m.SetValue(centerY+1, centerX-1, 1)
+	}
+
+	if centerY+1 < m.Rows() && centerX+1 < m.Cols() {
+		m.SetValue(centerY+1, centerX+1, 1)
+	}
+
+}
+
 func getNumberOfNeighbours(y, x int, m Matrix) int {
-	total := 0
+	type point struct {
+		y, x int
+	}
+
 	cols := m.Cols()
 	rows := m.Rows()
+	fields := map[point]int{}
 
-	if y > 0 && x > 0 {
-		total += m.Value(y-1, x-1)
+	//
+
+	for i := -1; i < 2; i++ {
+		for j := -1; j < 2; j++ {
+			xx := (x + i + cols) % cols
+			yy := (y + j + rows) % rows
+
+			if xx != x || yy != y {
+				fields[point{y: yy, x: xx}] = m.Value(yy, xx)
+			}
+		}
 	}
 
-	if y > 0 {
-		total += m.Value(y-1, x)
-	}
-
-	if y > 0 && x < cols-1 {
-		total += m.Value(y-1, x+1)
-	}
-
-	if x < cols-1 {
-		total += m.Value(y, x+1)
-	}
-
-	if y < rows-1 && x < cols-1 {
-		total += m.Value(y+1, x+1)
-	}
-
-	if y < rows-1 {
-		total += m.Value(y+1, x)
-	}
-
-	if y < rows-1 && x > 0 {
-		total += m.Value(y+1, x-1)
-	}
-
-	if x > 0 {
-		total += m.Value(y, x-1)
+	total := 0
+	for _, v := range fields {
+		total += v
 	}
 
 	return total
